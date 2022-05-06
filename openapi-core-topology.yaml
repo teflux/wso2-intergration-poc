@@ -1,0 +1,2943 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Core Topology API
+  description: Core Topology API
+paths:
+  /api/carrier/:
+    get:
+      description: |
+        Returns all carriers
+      operationId: getCarriers
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: carrier_ids
+          in: query
+          name: carrier_ids
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarrierList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createCarrier
+      requestBody:
+        description: Create Carrier
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarrierCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carrier'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/carrier/{pk}/:
+    get:
+      description: |
+        Returns carrier detail
+      operationId: getCarrier
+      parameters:
+        - name: pk
+          in: path
+          description: ID of carrier to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: carrier response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carrier'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/device/:
+    get:
+      description: Return Device List
+      operationId: getDevices
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: device_ids
+          in: query
+          name: device_ids
+          schema:
+            type: array
+            items:
+              type: string
+          required: false
+        - description: Include interfaces
+          in: query
+          name: include_interfaces
+          schema:
+            type: boolean
+        - description: model_type_id
+          in: query
+          name: model_type_id
+          schema:
+            type: string
+        - description: model_name
+          in: query
+          name: model_name
+          schema:
+            type: string
+        - description: vendor_id
+          in: query
+          name: vendor_id
+          schema:
+            type: string
+        - description: vendor_name
+          in: query
+          name: vendor_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createDevice
+      requestBody:
+        description: Create Device
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carrier'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/device/{pk}/:
+    get:
+      description: |
+        Returns device detail
+      operationId: getDevice
+      parameters:
+        - name: pk
+          in: path
+          description: ID of device to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - description: Include interfaces
+          in: query
+          name: include_interfaces
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: device response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/interface/:
+    get:
+      description: Return Interface List
+      operationId: getInterfaces
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: device_ids
+          in: query
+          name: device_ids
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+          required: false
+        - description: interface_ids
+          in: query
+          name: interface_ids
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterfaceList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createInterface
+      requestBody:
+        description: Create Interface
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterfaceCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interface'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/interface/{pk}/:
+    get:
+      description: |
+        Returns device detail
+      operationId: getInterface
+      parameters:
+        - name: pk
+          in: path
+          description: ID of interface to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: interface response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interface'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/model_type/:
+    get:
+      description: Return ModelType List
+      operationId: getModelTypes
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: model_type_ids
+          in: query
+          name: model_type_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: model_name
+          in: query
+          name: model_name
+          schema:
+            type: string
+        - description: vendor_id
+          in: query
+          name: vendor_id
+          schema:
+            type: string
+        - description: vendor_name
+          in: query
+          name: vendor_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelTypeList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createModelType
+      requestBody:
+        description: Create ModelType
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelTypeCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelType'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/model_type/{pk}/:
+    get:
+      description: |
+        Returns model_type detail
+      operationId: getModelType
+      parameters:
+        - name: pk
+          in: path
+          description: ID of model_type to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: model_type response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelType'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/vendor/:
+    get:
+      description: Return Vendor List
+      operationId: getVendors
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: vendor_ids
+          in: query
+          name: vendor_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: model_name
+          in: query
+          name: model_name
+          schema:
+            type: string
+        - description: vendor_id
+          in: query
+          name: vendor_id
+          schema:
+            type: string
+        - description: vendor_name
+          in: query
+          name: vendor_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createVendor
+      requestBody:
+        description: Create Vendor
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/vendor/{pk}/:
+    get:
+      description: |
+        Returns vendor detail
+      operationId: getVendor
+      parameters:
+        - name: pk
+          in: path
+          description: ID of vendor to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: vendor response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/endpoint/:
+    get:
+      description: Return Endpoint List
+      operationId: getEndpoints
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: endpoint_ids
+          in: query
+          name: endpoint_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: model_name
+          in: query
+          name: model_name
+          schema:
+            type: string
+        - description: endpoint_id
+          in: query
+          name: endpoint_id
+          schema:
+            type: string
+        - description: endpoint_name
+          in: query
+          name: endpoint_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EndpointList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createEndpoint
+      requestBody:
+        description: Create Endpoint
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndpointCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/endpoint/{pk}/:
+    get:
+      description: |
+        Returns endpoint detail
+      operationId: getEndpoint
+      parameters:
+        - name: pk
+          in: path
+          description: ID of endpoint to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: endpoint response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Endpoint'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/ip/:
+    get:
+      description: Return Ip List
+      operationId: getIps
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: ip_ids
+          in: query
+          name: ip_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/ip/{pk}/:
+    get:
+      description: |
+        Returns ip detail
+      operationId: getIp
+      parameters:
+        - name: pk
+          in: path
+          description: ID of ip to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: ip response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ip'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p_type/:
+    get:
+      description: Return P2pType List
+      operationId: getP2pTypes
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: p2p_type_ids
+          in: query
+          name: p2p_type_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: p2p_type_id
+          in: query
+          name: p2p_type_id
+          schema:
+            type: string
+        - description: p2p_type_name
+          in: query
+          name: p2p_type_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pTypeList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p_type/{pk}/:
+    get:
+      description: |
+        Returns p2p_type detail
+      operationId: getP2pType
+      parameters:
+        - name: pk
+          in: path
+          description: ID of p2p_type to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: p2p_type response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pType'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/lsp/:
+    get:
+      description: Return Lsp List
+      operationId: getLsps
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: lsp_ids
+          in: query
+          name: lsp_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: lsp_name
+          in: query
+          name: lsp_name
+          schema:
+            type: string
+        - description: include_lsp_entries
+          in: query
+          name: include_lsp_entries
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LspList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createLsp
+      requestBody:
+        description: Create Lsp
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LspCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lsp'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/lsp/{pk}/:
+    get:
+      description: |
+        Returns lsp detail
+      operationId: getLsp
+      parameters:
+        - name: pk
+          in: path
+          description: ID of lsp to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: lsp response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lsp'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p/:
+    get:
+      description: Return P2p List
+      operationId: getP2ps
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: p2p_ids
+          in: query
+          name: p2p_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: p2p_name
+          in: query
+          name: p2p_name
+          schema:
+            type: string
+        - description: include_p2p_pairs
+          in: query
+          name: include_p2p_pairs
+          schema:
+            type: boolean
+            default: false
+        - description: include_p2p_device_groups
+          in: query
+          name: include_p2p_device_groups
+          schema:
+            type: boolean
+            default: false
+        - description: include_interfaces
+          in: query
+          name: include_interfaces
+          schema:
+            type: boolean
+            default: false
+        - description: include_devices
+          in: query
+          name: include_devices
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createP2p
+      requestBody:
+        description: Create P2p
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/P2pCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2p'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p/{pk}/:
+    get:
+      description: |
+        Returns p2p detail
+      operationId: getP2p
+      parameters:
+        - name: pk
+          in: path
+          description: ID of p2p to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: p2p response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2p'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p_device_group/:
+    get:
+      description: Return P2pDeviceGroup List
+      operationId: getP2pDeviceGroups
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: p2p_device_group_ids
+          in: query
+          name: p2p_device_group_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: p2p_device_group_id
+          in: query
+          name: p2p_device_group_id
+          schema:
+            type: string
+        - description: p2p_device_group_name
+          in: query
+          name: p2p_device_group_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pDeviceGroupList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createP2pDeviceGroup
+      requestBody:
+        description: Create P2pDeviceGroup
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/P2pDeviceGroupCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pDeviceGroup'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p_device_group/{pk}/:
+    get:
+      description: |
+        Returns p2p_device_group detail
+      operationId: getP2pDeviceGroup
+      parameters:
+        - name: pk
+          in: path
+          description: ID of p2p_device_group to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: p2p_device_group response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pDeviceGroup'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p_pair/:
+    get:
+      description: Return P2pPair List
+      operationId: getP2pPairs
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: p2p_pair_ids
+          in: query
+          name: p2p_pair_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: p2p_pair_id
+          in: query
+          name: p2p_pair_id
+          schema:
+            type: string
+        - description: p2p_pair_name
+          in: query
+          name: p2p_pair_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pPairList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createP2pPair
+      requestBody:
+        description: Create P2pPair
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/P2pPairCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pPair'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/p2p_pair/{pk}/:
+    get:
+      description: |
+        Returns p2p_pair detail
+      operationId: getP2pPair
+      parameters:
+        - name: pk
+          in: path
+          description: ID of p2p_pair to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: p2p_pair response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/P2pPair'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/vrf/:
+    get:
+      description: Return Vrf List
+      operationId: getVrfs
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: vrf_ids
+          in: query
+          name: vrf_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: vrf_id
+          in: query
+          name: vrf_id
+          schema:
+            type: string
+        - description: vrf_name
+          in: query
+          name: vrf_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VrfList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createVrf
+      requestBody:
+        description: Create Vrf
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VrfCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vrf'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/vrf/{pk}/:
+    get:
+      description: |
+        Returns vrf detail
+      operationId: getVrf
+      parameters:
+        - name: pk
+          in: path
+          description: ID of vrf to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: vrf response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vrf'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/vlan/:
+    get:
+      description: Return Vlan List
+      operationId: getVlans
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: vlan_ids
+          in: query
+          name: vlan_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: model_name
+          in: query
+          name: model_name
+          schema:
+            type: string
+        - description: vlan_id
+          in: query
+          name: vlan_id
+          schema:
+            type: string
+        - description: vlan_name
+          in: query
+          name: vlan_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VlanList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/vlan/{pk}/:
+    get:
+      description: |
+        Returns vlan detail
+      operationId: getVlan
+      parameters:
+        - name: pk
+          in: path
+          description: ID of vlan to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: vlan response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vlan'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/l2_vpn/:
+    get:
+      description: Return L2Vpn List
+      operationId: getL2Vpns
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: l2_vpn_ids
+          in: query
+          name: l2_vpn_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: l2_vpn_id
+          in: query
+          name: l2_vpn_id
+          schema:
+            type: string
+        - description: l2_vpn_name
+          in: query
+          name: l2_vpn_name
+          schema:
+            type: string
+        - description: include_endpoints
+          in: query
+          name: include_endpoints
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/L2VpnList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createL2Vpn
+      requestBody:
+        description: Create L2Vpn
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/L2VpnCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/L2Vpn'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/l2_vpn/{pk}/:
+    get:
+      description: |
+        Returns l2_vpn detail
+      operationId: getL2Vpn
+      parameters:
+        - name: pk
+          in: path
+          description: ID of l2_vpn to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: l2_vpn response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/L2Vpn'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/l3_endpoint/:
+    get:
+      description: Return L3Endpoint List
+      operationId: getL3Endpoints
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: l3_endpoint_ids
+          in: query
+          name: l3_endpoint_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: model_name
+          in: query
+          name: model_name
+          schema:
+            type: string
+        - description: l3_endpoint_id
+          in: query
+          name: l3_endpoint_id
+          schema:
+            type: string
+        - description: l3_endpoint_name
+          in: query
+          name: l3_endpoint_name
+          schema:
+            type: string
+        - description: include_endpoint
+          in: query
+          name: include_endpoint
+          schema:
+            type: boolean
+        - description: include_pseudowire_he
+          in: query
+          name: include_pseudowire_he
+          schema:
+            type: boolean
+        - description: include_vlan
+          in: query
+          name: include_vlan
+          schema:
+            type: boolean
+        - description: include_device
+          in: query
+          name: include_device
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/L3EndpointList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createL3Endpoint
+      requestBody:
+        description: Create L3Endpoint
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/L3EndpointCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/L3Endpoint'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/l3_endpoint/{pk}/:
+    get:
+      description: |
+        Returns l3_endpoint detail
+      operationId: getL3Endpoint
+      parameters:
+        - name: pk
+          in: path
+          description: ID of l3_endpoint to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: l3_endpoint response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/L3Endpoint'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/pseudowire_he/:
+    get:
+      description: Return PseudowireHe List
+      operationId: getPseudowireHes
+      parameters:
+        - description: maximum number of results to return
+          in: query
+          name: limit
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: offset from start for results to return
+          in: query
+          name: offset
+          schema:
+            type: integer
+            format: int64
+          required: false
+        - description: pseudowire_he_ids
+          in: query
+          name: pseudowire_he_ids
+          schema:
+            type: array
+            items:
+              type: integer
+          required: false
+        - description: model_name
+          in: query
+          name: model_name
+          schema:
+            type: string
+        - description: pseudowire_he_id
+          in: query
+          name: pseudowire_he_id
+          schema:
+            type: string
+        - description: pseudowire_he_name
+          in: query
+          name: pseudowire_he_name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PseudowireHeList'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createPseudowireHe
+      requestBody:
+        description: Create PseudowireHe
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PseudowireHeCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PseudowireHe'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/pseudowire_he/{pk}/:
+    get:
+      description: |
+        Returns pseudowire_he detail
+      operationId: getPseudowireHe
+      parameters:
+        - name: pk
+          in: path
+          description: ID of pseudowire_he to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: pseudowire_he response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PseudowireHe'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+security:
+  - openId:
+    - openid
+    - offline_access
+components:
+  securitySchemes:
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://oauth.docker.otw.net.au/.well-known/openid-configuration
+    oAuthLocal:
+      type: oauth2
+      description: Local OAuth
+      flows:
+        authorizationCode:
+          authorizationUrl: https://oauth.docker.otw.net.au/oauth2/auth
+          tokenUrl: https://oauth.docker.otw.net.au/oauth2/token
+
+          scopes:
+            openid: openid
+            offline_access: offline_access
+  schemas:
+    PseudowireHe:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - head_endpoint_id
+        - tail_endpoint_id
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        head_endpoint_id:
+          type: integer
+          format: int64
+        tail_endpoint_id:
+          type: integer
+          format: int64
+    PseudowireHeList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PseudowireHe'
+    PseudowireHeCreate:
+      type: object
+      required:
+        - name
+        - head_endpoint_id
+        - tail_endpoint_id
+      properties:
+        name:
+          type: string
+        head_endpoint_id:
+          type: integer
+          format: int64
+        tail_endpoint_id:
+          type: integer
+          format: int64
+    LspEntry:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - order_index
+        - action
+        - p2p_device_group
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        order_index:
+          type: integer
+          format: int64
+        action:
+          $ref: '#/components/schemas/Action'
+        p2p_device_group:
+          $ref: '#/components/schemas/P2pDeviceGroup'
+    LspEntryList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LspEntry'
+    LspEntryCreate:
+      type: object
+      required:
+        - action_id
+        - order_index
+        - p2p_device_group_id
+      properties:
+        order_index:
+          type: integer
+          format: int64
+        action_id:
+          type: integer
+          format: int64
+        p2p_device_group_id:
+          type: integer
+          format: int64
+    Lsp:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        lsp_entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LspEntry'
+    LspList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lsp'
+    LspCreate:
+      type: object
+      required:
+        - name
+        - lsp_entries
+      properties:
+        name:
+          type: string
+        lsp_entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LspEntryCreate'
+    Vlan:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - outer_vlan
+        - active
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        outer_vlan:
+          type: integer
+          format: int64
+        second_vlan:
+          type: integer
+          format: int64
+        third_vlan:
+          type: integer
+          format: int64
+        location_id:
+          type: integer
+          format: int64
+        device_id:
+          type: integer
+          format: int64
+        interface_id:
+          type: integer
+          format: int64
+        active:
+          type: boolean
+    VlanList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vlan'
+    VlanCreate:
+      type: object
+      required:
+        - outer_vlan
+        - scope
+      properties:
+        outer_vlan:
+          type: integer
+          format: int64
+        second_vlan:
+          type: integer
+          format: int64
+        third_vlan:
+          type: integer
+          format: int64
+        scope:
+          type: string
+          enum:
+            - interface
+            - device
+            - location
+    L3Endpoint:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - endpoint
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        pseudowire_he:
+          $ref: '#/components/schemas/PseudowireHe'
+        endpoint:
+          $ref: '#/components/schemas/Endpoint'
+        vrf:
+          $ref: '#/components/schemas/Vrf'
+        ip_v4:
+          type: string
+        ip_v6:
+          type: string
+        routes_v4:
+          type: array
+          items:
+            type: string
+        routes_v6:
+          type: array
+          items:
+            type: string
+    L3EndpointList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/L3Endpoint'
+    L3EndpointCreate:
+      type: object
+      required:
+        - name
+        - interface_id
+        - bir-egress
+        - cir-egress
+        - bir-ingress
+        - cir-ingress
+      properties:
+        name:
+          type: string
+        ip_v4:
+          type: string
+        ip_v6:
+          type: string
+        routes_v4:
+          type: array
+          items:
+            type: string
+        routes_v6:
+          type: array
+          items:
+            type: string
+        pseudowire_he_id:
+          type: integer
+          format: int64
+        interface_id:
+          type: integer
+          format: int64
+        cir-ingress:
+          type: integer
+          format: int64
+        bir-ingress:
+          type: integer
+          format: int64
+        cir-egress:
+          type: integer
+          format: int64
+        bir-egress:
+          type: integer
+          format: int64
+        vlan:
+          $ref: '#/components/schemas/VlanCreate'
+        vrf_id:
+          type: integer
+          format: int64
+    Endpoint:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - cir_egress
+        - cir_ingress
+        - bir_egress
+        - bir_ingress
+        - interface
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        interface:
+          $ref: '#/components/schemas/Interface'
+        vlan:
+          $ref: '#/components/schemas/Vlan'
+        cir_ingress:
+          type: integer
+          format: int64
+        bir_ingress:
+          type: integer
+          format: int64
+        cir_egress:
+          type: integer
+          format: int64
+        bir_egress:
+          type: integer
+          format: int64
+    EndpointList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Endpoint'
+    EndpointCreate:
+      type: object
+      required:
+        - cir_egress
+        - cir_ingress
+        - bir_egress
+        - bir_ingress
+        - interface_id
+      properties:
+        vlan:
+          $ref: '#/components/schemas/VlanCreate'
+        interface_id:
+          type: integer
+          format: int64
+        cir_ingress:
+          type: integer
+          format: int64
+        bir_ingress:
+          type: integer
+          format: int64
+        cir_egress:
+          type: integer
+          format: int64
+        bir_egress:
+          type: integer
+          format: int64
+    Vendor:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+    VendorList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vendor'
+    VendorCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    ModelType:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        vendor:
+          $ref: '#/components/schemas/Vendor'
+    ModelTypeList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelType'
+    ModelTypeCreate:
+      type: object
+      required:
+        - name
+        - vendor_id
+      properties:
+        name:
+          type: string
+        vendor_id:
+          type: integer
+          format: int64
+    Carrier:
+      type: object
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+    CarrierList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Carrier'
+    CarrierCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    Device:
+      type: object
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        deleted_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        asset_number:
+          type: string
+        line_cards:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        serial:
+          type: string
+        interfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interface'
+    DeviceList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Device'
+    DeviceCreate:
+      type: object
+      required:
+        - name
+        - serial
+        - asset_number
+        - model_type_id
+      properties:
+        asset_number:
+          type: string
+        line_cards:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        serial:
+          type: string
+        vendor_id:
+          type: integer
+          format: int64
+    Interface:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - speed
+        - device_id
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        speed:
+          type: integer
+          format: int64
+        device_id:
+          type: integer
+          format: int64
+        device:
+          $ref: '#/components/schemas/Device'
+        description:
+          type: string
+    InterfaceList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interface'
+    InterfaceCreate:
+      type: object
+      required:
+        - name
+        - speed
+        - device_id
+      properties:
+        name:
+          type: string
+        speed:
+          type: integer
+          format: int64
+        device_id:
+          type: integer
+          format: int64
+        description:
+          type: string
+
+    P2pType:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+    P2pTypeList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2pType'
+    P2p:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - mtu
+        - p2p_type
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        mtu:
+          type: integer
+          format: int64
+        p2p_type:
+          $ref: '#/components/schemas/P2pType'
+        p2p_pairs:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2pPair'
+        p2p_device_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2pDeviceGroup'
+    P2pList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2p'
+    P2pCreateDeviceGroup:
+      type: object
+      required:
+        - name
+        - interface_ids
+        - device_id
+      properties:
+        name:
+          type: string
+        ip_v4:
+          type: string
+        ip_v6:
+          type: string
+        device_id:
+          type: integer
+          format: int64
+        interface_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+    P2pCreatePair:
+      type: object
+      required:
+        - p2p_id
+        - interface_ids
+      properties:
+        p2p_id:
+          type: integer
+          format: int64
+        interface_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+    P2pCreate:
+      type: object
+      required:
+        - name
+        - mtu
+        - p2p_type_id
+      properties:
+        name:
+          type: string
+        mtu:
+          type: integer
+          format: int64
+        p2p_type_id:
+          type: integer
+          format: int64
+        p2p_device_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2pCreateDeviceGroup'
+        p2p_pairs:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2pCreatePair'
+    P2pDeviceGroup:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - p2p_id
+        - device
+        - interfaces
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        ip_v4:
+          type: string
+        ip_v6:
+          type: string
+        p2p_id:
+          type: integer
+          format: int64
+        device:
+          $ref: '#/components/schemas/Device'
+        interfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interface'
+    P2pDeviceGroupList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2pDeviceGroup'
+    P2pDeviceGroupCreate:
+      type: object
+      required:
+        - name
+        - p2p_id
+        - interface_ids
+      properties:
+        name:
+          type: string
+        ip_v4:
+          type: string
+        ip_v6:
+          type: string
+        p2p_id:
+          type: integer
+          format: int64
+        interface_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+    P2pPair:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - p2p_id
+        - interfaces
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        p2p_id:
+          type: integer
+          format: int64
+        interfaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interface'
+    P2pPairList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/P2pPair'
+    P2pPairCreate:
+      type: object
+      required:
+        - p2p_id
+        - interface_ids
+      properties:
+        p2p_id:
+          type: integer
+          format: int64
+        interface_ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+    L2Vpn:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - endpoints
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        lsp:
+          $ref: '#/components/schemas/Lsp'
+        endpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/Endpoint'
+    L2VpnList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/L2Vpn'
+    L2VpnCreate:
+      type: object
+      required:
+        - name
+        - endpoints
+      properties:
+        name:
+          type: string
+        lsp:
+          $ref: '#/components/schemas/LspCreate'
+        endpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/EndpointCreate'
+    Vrf:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - rd
+        - export_map
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        name:
+          type: string
+        rd:
+          type: string
+        export_map:
+          type: string
+    VrfList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vrf'
+    VrfCreate:
+      type: object
+      required:
+        - name
+        - rd
+        - export_map
+      properties:
+        name:
+          type: string
+        rd:
+          type: string
+        export_map:
+          type: string
+    Ip:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - afi
+        - inet
+      properties:
+        id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        afi:
+          type: string
+        inet:
+          type: string
+    IpList:
+      type: object
+      required:
+        - limit
+        - offset
+        - total
+        - data
+      properties:
+        limit:
+          type: integer
+          format: int64
+        offset:
+          type: integer
+          format: int64
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ip'
+    Action:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        message:
+          type: string
