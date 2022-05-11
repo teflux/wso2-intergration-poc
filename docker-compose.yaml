@@ -12,6 +12,13 @@ services:
       - PROFILE_NAME=control-plane
     volumes:
       - ./conf/deployment.toml:/home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
+  api-controller:
+    build: ./docker/api-controller
+    image: wso2/api-controller
+    hostname: api-controller
+    volumes:
+      - ./docker/openapi-specs/:/tmp/openapi-specs/
+    command: ["tail", "-f", "/dev/null"]
   router:
     image: wso2/choreo-connect-router:1.1.0
     logging:
@@ -94,6 +101,88 @@ services:
     ports:
       - "8081:8081"
       - "9001:9001"
+  router-mgw2:
+    image: wso2/choreo-connect-router:1.1.0
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "5"
+    environment:
+      - ROUTER_ADMIN_HOST=0.0.0.0
+      - ROUTER_ADMIN_PORT=9000
+      - ROUTER_CLUSTER=default_cluster
+      - ROUTER_LABEL=Internal
+      - ROUTER_PRIVATE_KEY_PATH=/home/wso2/security/keystore/mg.key
+      - ROUTER_PUBLIC_CERT_PATH=/home/wso2/security/keystore/mg.pem
+      - ADAPTER_HOST=adapter-mgw2
+      - ADAPTER_PORT=18000
+      - ADAPTER_CA_CERT_PATH=/home/wso2/security/truststore/mg.pem
+      - ENFORCER_HOST=enforcer-mgw2
+      - ENFORCER_PORT=8081
+      - ENFORCER_CA_CERT_PATH=/home/wso2/security/truststore/mg.pem
+      - CONCURRENCY=2
+    volumes:
+      - ./resources/router/security:/home/wso2/security
+    ports:
+      - "29095:9095"
+      - "29000:9000"
+      - "29090:9090"
+    links:
+      - adapter
+      - enforcer
+  adapter-mgw2:
+    image: wso2/choreo-connect-adapter:1.1.0
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "5"
+    volumes:
+      - ./resources/adapter/security:/home/wso2/security
+      - ./conf/log_config.toml:/home/wso2/conf/log_config.toml
+      - ./conf/config.toml:/home/wso2/conf/config.toml
+    environment:
+      - ADAPTER_PRIVATE_KEY_PATH=/home/wso2/security/keystore/mg.key
+      - ADAPTER_PUBLIC_CERT_PATH=/home/wso2/security/keystore/mg.pem
+      - cp_admin_pwd=admin
+      - adapter_admin_pwd=admin
+    ports:
+      - "28000:18000"
+      - "29843:9843"
+    links:
+      - apim
+  enforcer-mgw2:
+    image: wso2/choreo-connect-enforcer:1.1.0
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "5"
+    volumes:
+      - ./resources/enforcer/security:/home/wso2/security
+      - ./conf/log4j2.properties:/home/wso2/conf/log4j2.properties
+      - ./resources/enforcer/dropins:/home/wso2/lib/dropins
+    links:
+      - adapter
+      - apim
+    environment:
+      - ENFORCER_PRIVATE_KEY_PATH=/home/wso2/security/keystore/mg.key
+      - ENFORCER_PUBLIC_CERT_PATH=/home/wso2/security/keystore/mg.pem
+      - TRUSTED_CA_CERTS_PATH=/home/wso2/security/truststore
+      - ADAPTER_HOST_NAME=adapter-mgw2
+      - ADAPTER_HOST=adapter-mgw2
+      - ADAPTER_XDS_PORT=18000
+      - ENFORCER_LABEL=Internal
+      - ENFORCER_REGION=UNKNOWN
+      - XDS_MAX_MSG_SIZE=4194304
+      - XDS_MAX_RETRIES=3
+      - JAVA_OPTS=${JAVA_OPTS} -Dhttpclient.hostnameVerifier=AllowAll
+      - apim_admin_pwd=admin
+      - enforcer_admin_pwd=admin
+      - tm_admin_pwd=admin
+      - analytics_authURL=https://localhost:8080
+      - analytics_authToken=
+    ports:
+      - "28081:8081"
+      - "29001:9001"
   sample-api-1:
     image: codegerm/mocky
     ports:
@@ -101,7 +190,7 @@ services:
     environment:
       - PROFILE_NAME=control-plane
     volumes:
-      - ./openapi-core-topology.yaml:/tmp/openapi-core-topology.yaml
+      - ./docker/openapi-specs/openapi-core-topology.yaml:/tmp/openapi-core-topology.yaml
     command:
       mock -h 0.0.0.0 /tmp/openapi-core-topology.yaml
 
