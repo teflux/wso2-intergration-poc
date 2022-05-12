@@ -21,7 +21,7 @@ echo "Logging into env dockerdev"
 apictl -k  login dockerdev -u admin -p admin
 
 echo "Creating new project for sampleapp1"
-apictl -k init sampleapp1--oas /tmp/openapi-specs/openapi-core-topology.yaml --force=true
+apictl -k init sampleapp1 --oas /tmp/openapi-specs/openapi-core-topology.yaml --force=true
 
 echo "Updating endpoint urls"
 sed -i 's/localhost:8080/sample-api-1:4010/g' sampleapp1/api.yaml

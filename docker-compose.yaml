@@ -20,8 +20,7 @@ services:
       - apim
     volumes:
       - ./docker/openapi-specs/:/tmp/openapi-specs/
-#    command: ["/usr/local/bin/init.sh"]
-    command: ["tail", "-f", "/dev/null"]
+    command: ["/usr/local/bin/init.sh"]
   router:
     image: wso2/choreo-connect-router:1.1.0
     logging:
@@ -45,9 +44,9 @@ services:
     volumes:
       - ./resources/router/security:/home/wso2/security
     ports:
-      - "9095:9095"
-      - "9000:9000"
-      - "9090:9090"
+      - "19095:9095"
+      - "19000:9000"
+      - "19090:9090"
     links:
       - adapter
       - enforcer
@@ -68,7 +67,7 @@ services:
       - adapter_admin_pwd=admin
     ports:
       - "18000:18000"
-      - "9843:9843"
+      - "19843:9843"
     links:
       - apim
   enforcer:
@@ -102,8 +101,8 @@ services:
       - analytics_authURL=https://localhost:8080
       - analytics_authToken=
     ports:
-      - "8081:8081"
-      - "9001:9001"
+      - "18081:8081"
+      - "19001:9001"
   router-mgw2:
     image: wso2/choreo-connect-router:1.1.0
     logging:
