@@ -54,6 +54,13 @@ APIM can be managed locally on  https://apim:9444/publisher/
 
 ### Init process
 
+Log into the api-controller container.  This is going to be automated
+
+``` 
+$ docker-compose exec api-controller bash
+root@api-controller:/# 
+```
+
 Create env 
 
 ```
@@ -67,13 +74,14 @@ apictl  add  env   dockerdev  \
 
 Log into env
 ```
-$ apictl -k  login dockerdev -u admin -p admin 
+apictl -k  login dockerdev -u admin -p admin 
 ```
 
 Create a new project
 
 ``` 
 apictl -k init sampleapp1 --oas /tmp/openapi-specs/openapi-core-topology.yaml --force=true
+
 Initializing a new WSO2 API Manager project in /tmp/sampleapp1
 Project initialized
 Open README file to learn more
