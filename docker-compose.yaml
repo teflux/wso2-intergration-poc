@@ -16,8 +16,11 @@ services:
     build: ./docker/api-controller
     image: wso2/api-controller
     hostname: api-controller
+    depends_on:
+      - apim
     volumes:
       - ./docker/openapi-specs/:/tmp/openapi-specs/
+#    command: ["/usr/local/bin/init.sh"]
     command: ["tail", "-f", "/dev/null"]
   router:
     image: wso2/choreo-connect-router:1.1.0
