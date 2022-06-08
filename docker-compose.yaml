@@ -12,6 +12,10 @@ services:
       - PROFILE_NAME=control-plane
     volumes:
       - ./conf/deployment.toml:/home/wso2carbon/wso2-config-volume/repository/conf/deployment.toml
+      - ./resources/controlplane/lib/postgresql-42.3.6.jar:/home/wso2carbon/wso2-config-volume/repository/components/lib/postgresql-42.3.6.jar
+      - ./resources/controlplane/security/keystore/wso2carbon_tls.jks:/home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon_tls.jks
+      - ./resources/controlplane/security/keystore/wso2carbon_internal.jks:/home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon_internal.jks
+      - ./resources/controlplane/bin/api-manager.sh:/home/wso2carbon/wso2-config-volume/bin/api-manager.sh
   api-controller:
     build: ./docker/api-controller
     image: wso2/api-controller
@@ -79,7 +83,7 @@ services:
     volumes:
       - ./resources/enforcer/security:/home/wso2/security
       - ./conf/log4j2.properties:/home/wso2/conf/log4j2.properties
-      - ./resources/enforcer/dropins:/home/wso2/lib/dropins
+      #- ./resources/enforcer/dropins:/home/wso2/lib/dropins
     links:
       - adapter
       - apim
@@ -130,8 +134,8 @@ services:
       - "29000:9000"
       - "29090:9090"
     links:
-      - adapter
-      - enforcer
+      - adapter-mgw2
+      - enforcer-mgw2
   adapter-mgw2:
     image: wso2/choreo-connect-adapter:1.1.0
     logging:
@@ -141,7 +145,7 @@ services:
     volumes:
       - ./resources/adapter/security:/home/wso2/security
       - ./conf/log_config.toml:/home/wso2/conf/log_config.toml
-      - ./conf/config.toml:/home/wso2/conf/config.toml
+      - ./conf/config_mgw2.toml:/home/wso2/conf/config.toml
     environment:
       - ADAPTER_PRIVATE_KEY_PATH=/home/wso2/security/keystore/mg.key
       - ADAPTER_PUBLIC_CERT_PATH=/home/wso2/security/keystore/mg.pem
@@ -161,15 +165,15 @@ services:
     volumes:
       - ./resources/enforcer/security:/home/wso2/security
       - ./conf/log4j2.properties:/home/wso2/conf/log4j2.properties
-      - ./resources/enforcer/dropins:/home/wso2/lib/dropins
+      #- ./resources/enforcer/dropins:/home/wso2/lib/dropins
     links:
-      - adapter
+      - adapter-mgw2
       - apim
     environment:
       - ENFORCER_PRIVATE_KEY_PATH=/home/wso2/security/keystore/mg.key
       - ENFORCER_PUBLIC_CERT_PATH=/home/wso2/security/keystore/mg.pem
       - TRUSTED_CA_CERTS_PATH=/home/wso2/security/truststore
-      - ADAPTER_HOST_NAME=adapter-mgw2
+      - ADAPTER_HOST_NAME=adapter
       - ADAPTER_HOST=adapter-mgw2
       - ADAPTER_XDS_PORT=18000
       - ENFORCER_LABEL=Internal
@@ -196,3 +200,14 @@ services:
     command:
       mock -h 0.0.0.0 /tmp/openapi-core-topology.yaml
 
+  wso2-db:
+      build: ./db/
+      image: wso2/db
+      hostname: wso2-db
+#      volumes:
+#        - ./dbstore:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_HOST_AUTH_METHOD=trust
+      ports:
+        - "51409:5432"
+      command: ["postgres", "-c", "log_statement=all"]

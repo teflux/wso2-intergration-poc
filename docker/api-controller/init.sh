@@ -5,6 +5,8 @@ while ! nc -z apim 9444; do
   sleep 10;
 done
 
+sleep 60
+
 tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 cd $tmp_dir
 echo "Creating temp directory for initialisation - ${tmp_dir}"
@@ -27,6 +29,16 @@ echo "Updating endpoint urls"
 sed -i 's/localhost:8080/sample-api-1:4010/g' sampleapp1/api.yaml
 sed -i 's/localhost:8081/sample-api-1:4010/g' sampleapp1/api.yaml
 
-echo "Deploying sampleapp1 to apim"
+cp /tmp/openapi-specs/deployment_environments.yaml sampleapp1/
+
+echo "Importing sampleapp1 to apim"
 apictl -k import api -f sampleapp1/ -e dockerdev
+
+apictl -k  login dockerdev -u admin -p admin
+
+
+echo "Publishing API"
+apictl -k change-status api -a Publish -n CoreTopologyAPI -v 1.0.0 -e dockerdev
+
+
 

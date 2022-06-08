@@ -13,20 +13,44 @@ create_admin_account = true
 [user_store]
 type = "database_unique_id"
 
-[database.apim_db]
-type = "h2"
-url = "jdbc:h2:./repository/database/WSO2AM_DB;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE"
-username = "wso2carbon"
-password = "wso2carbon"
+#[database.apim_db]
+#type = "h2"
+#url = "jdbc:h2:./repository/database/WSO2AM_DB;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE"
+#username = "wso2carbon"
+#password = "wso2carbon"
+
+#[database.shared_db]
+#type = "h2"
+#url = "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
+#username = "wso2carbon"
+#password = "wso2carbon"
 
 [database.shared_db]
-type = "h2"
-url = "jdbc:h2:./repository/database/WSO2SHARED_DB;DB_CLOSE_ON_EXIT=FALSE"
-username = "wso2carbon"
-password = "wso2carbon"
+type = "postgre"
+url = "jdbc:postgresql://wso2-db:5432/shared_db"
+username = "shared_db"
+password = "shared_db"
+driver = "org.postgresql.Driver"
+validationQuery = "SELECT 1"
+pool_options.maxActive = 100
+pool_options.maxWait = 10000
+pool_options.validationInterval = 10000
+pool_options.testOnBorrow = "true"
+
+[database.apim_db]
+type = "postgre"
+url = "jdbc:postgresql://wso2-db:5432/apim_db"
+username = "apim_db"
+password = "apim_db"
+driver = "org.postgresql.Driver"
+validationQuery = "SELECT 1"
+pool_options.maxActive = 100
+pool_options.maxWait = 10000
+pool_options.validationInterval = 10000
+pool_options.testOnBorrow = "true"
 
 [keystore.tls]
-file_name =  "wso2carbon.jks"
+file_name =  "wso2carbon_tls.jks"
 type =  "JKS"
 password =  "wso2carbon"
 alias =  "wso2carbon"
@@ -42,12 +66,12 @@ key_password =  "wso2carbon"
 #alias =  "wso2carbon"
 #key_password =  "wso2carbon"
 
-#[keystore.internal]
-#file_name =  "wso2carbon.jks"
-#type =  "JKS"
-#password =  "wso2carbon"
-#alias =  "wso2carbon"
-#key_password =  "wso2carbon"
+[keystore.internal]
+file_name =  "wso2carbon_internal.jks"
+type =  "JKS"
+password =  "wso2carbon"
+alias =  "wso2carbon"
+key_password =  "wso2carbon"
 
 [[apim.gateway.environment]]
 name = "Default"
@@ -271,3 +295,7 @@ password = "${admin.password}"
 enable = true
 allow_refresh_tokens = true
 iat_validity_period = "1h"
+
+[tenant_mgt]
+enable_email_domain= false
+
