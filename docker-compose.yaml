@@ -16,6 +16,7 @@ services:
       - ./resources/controlplane/security/keystore/wso2carbon_tls.jks:/home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon_tls.jks
       - ./resources/controlplane/security/keystore/wso2carbon_internal.jks:/home/wso2carbon/wso2-config-volume/repository/resources/security/wso2carbon_internal.jks
       - ./resources/controlplane/bin/api-manager.sh:/home/wso2carbon/wso2-config-volume/bin/api-manager.sh
+    hostname: hostname.docker.otw.net.au
   api-controller:
     build: ./docker/api-controller
     image: wso2/api-controller
@@ -69,9 +70,9 @@ services:
       - ADAPTER_PUBLIC_CERT_PATH=/home/wso2/security/keystore/mg.pem
       - cp_admin_pwd=admin
       - adapter_admin_pwd=admin
-    ports:
-      - "18000:18000"
-      - "19843:9843"
+#    ports:
+#      - "18000:18000"
+#      - "19843:9843"
     links:
       - apim
   enforcer:
@@ -104,9 +105,9 @@ services:
       - tm_admin_pwd=admin
       - analytics_authURL=https://localhost:8080
       - analytics_authToken=
-    ports:
-      - "18081:8081"
-      - "19001:9001"
+#    ports:
+#      - "18081:8081"
+#      - "19001:9001"
   router-mgw2:
     image: wso2/choreo-connect-router:1.1.0
     logging:
@@ -151,9 +152,9 @@ services:
       - ADAPTER_PUBLIC_CERT_PATH=/home/wso2/security/keystore/mg.pem
       - cp_admin_pwd=admin
       - adapter_admin_pwd=admin
-    ports:
-      - "28000:18000"
-      - "29843:9843"
+#    ports:
+#      - "28000:18000"
+#      - "29843:9843"
     links:
       - apim
   enforcer-mgw2:
@@ -186,9 +187,9 @@ services:
       - tm_admin_pwd=admin
       - analytics_authURL=https://localhost:8080
       - analytics_authToken=
-    ports:
-      - "28081:8081"
-      - "29001:9001"
+#    ports:
+#      - "28081:8081"
+#      - "29001:9001"
   sample-api-1:
     image: codegerm/mocky
     ports:
@@ -208,6 +209,6 @@ services:
 #        - ./dbstore:/var/lib/postgresql/data
       environment:
         - POSTGRES_HOST_AUTH_METHOD=trust
-      ports:
-        - "51409:5432"
+#      ports:
+#        - "51409:5432"
       command: ["postgres", "-c", "log_statement=all"]
